@@ -1,9 +1,7 @@
 FROM python:3.10-alpine
 
 # Security updates
-RUN apt-get update \
-    && apt-get -y upgrade && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk update && apk upgrade 
 
 # Copy code
 COPY *.py /app/
