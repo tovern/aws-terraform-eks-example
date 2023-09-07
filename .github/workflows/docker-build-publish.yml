@@ -37,7 +37,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: application
+          context: "{{defaultContext}}:application"
           push: true
           file: Dockerfile
           platforms: linux/amd64
