@@ -4,7 +4,7 @@ FROM python:3.10-alpine
 RUN apk update && apk upgrade 
 
 # Copy code
-COPY *.py /app/
+COPY *.py requirements.txt /app/
 WORKDIR /app
 
 # Install dependencies
