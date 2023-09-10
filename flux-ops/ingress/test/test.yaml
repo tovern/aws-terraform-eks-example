@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "test-ingress"
+  namespace: "test"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-TLS13-1-2-2021-06"
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:eu-west-2:842487502406:certificate/5cd75a8f-5d29-4e99-8d04-29da08137a93"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+    alb.ingress.kubernetes.io/actions.response-403: >
+      {"type":"fixed-response","fixedResponseConfig":{"contentType":"text/plain","statusCode":"403","messageBody":"403 External access to endpoint not allowed"}}
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /prepare-for-deploy
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: response-403
+            port: use-annotation
+      - path: /ready-for-deploy
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: response-403
+            port: use-annotation
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: "simple-python-rest-service"
+            port:
+              number: 5000
