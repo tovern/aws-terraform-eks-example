@@ -32,6 +32,13 @@ class Palindrom(db.Model):
 def is_ready():
     return datetime.now() > context['start_time'] + timedelta(seconds=10)
 
+def create_db():
+    with app.app_context():
+        db.create_all()
+
+def drop_db():
+    with app.app_context():
+        db.drop_all()
 
 @app.route('/')
 def hello_world():
