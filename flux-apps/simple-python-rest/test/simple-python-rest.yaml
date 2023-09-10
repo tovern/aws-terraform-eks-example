@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: simple-python-rest
-          image: docker.io/tovern/simple-python-rest:v1.0.5
+          image: docker.io/tovern/simple-python-rest:v1.0.6
           env:
             - name: PYTHON_ENV
               value: "test"
