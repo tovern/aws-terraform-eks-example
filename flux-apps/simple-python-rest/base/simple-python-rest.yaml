@@ -89,11 +89,13 @@ spec:
     name: aws-secrets-manager
     kind: ClusterSecretStore
   refreshInterval: "1m"
-  target:
-    name: admin-creds
   dataFrom:
   - extract:
-    key: test/admin-creds
+      key: test/admin-creds
+  target:
+    name: admin-creds
+    creationPolicy: "Owner"
+    deletionPolicy: "Delete"
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
@@ -104,8 +106,10 @@ spec:
     name: aws-secrets-manager
     kind: ClusterSecretStore
   refreshInterval: "1m"
-  target:
-    name: db-creds
   dataFrom:
   - extract:
-    key: test/db-creds
+      key: test/db-creds
+  target:
+    name: db-creds
+    creationPolicy: "Owner"
+    deletionPolicy: "Delete"
