@@ -1,10 +1,10 @@
 resource "aws_secretsmanager_secret" "admin_creds" {
-  name = "${var.environment}/admin_creds"
+  name                    = "${var.environment}/admin_creds"
   recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret" "db_creds" {
-  name = "${var.environment}/db_creds"
+  name                    = "${var.environment}/db_creds"
   recovery_window_in_days = 0
 }
 

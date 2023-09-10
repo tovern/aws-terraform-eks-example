@@ -152,7 +152,8 @@ master:
   ## Commands will be completely disabled by renaming each to an empty string.
   ## ref: https://redis.io/topics/security#disabling-of-specific-commands
   ##
-  disableCommands: []
+  disableCommands:
+    []
     # - FLUSHDB
     # - FLUSHALL
   ## @param master.command Override default container command (useful when using custom images)
@@ -317,7 +318,7 @@ master:
   ## @param master.nodeSelector Node labels for Redis&trade; master pods assignment
   ## ref: https://kubernetes.io/docs/user-guide/node-selection/
   ##
-  nodeSelector: {"eks.amazonaws.com/capacityType": "ON_DEMAND"}
+  nodeSelector: { "eks.amazonaws.com/capacityType": "ON_DEMAND" }
   ## @param master.tolerations Tolerations for Redis&trade; master pods assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -626,7 +627,7 @@ replica:
   ## @param replica.nodeSelector Node labels for Redis&trade; replicas pods assignment
   ## ref: https://kubernetes.io/docs/user-guide/node-selection/
   ##
-  nodeSelector: {"eks.amazonaws.com/capacityType": "ON_DEMAND"}
+  nodeSelector: { "eks.amazonaws.com/capacityType": "ON_DEMAND" }
   ## @param replica.tolerations Tolerations for Redis&trade; replicas pods assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##

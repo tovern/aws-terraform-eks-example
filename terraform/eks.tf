@@ -110,7 +110,7 @@ module "external_secrets" {
 # Subnets tags are required for ALB discovery
 
 resource "aws_ec2_tag" "public_subnet_cluster_tag" {
-  count = length(module.network.vpc_public_subnets)
+  count       = length(module.network.vpc_public_subnets)
   resource_id = module.network.vpc_public_subnets[count.index]
   key         = "kubernetes.io/cluster/${var.environment}-cluster"
   value       = "shared"
@@ -119,7 +119,7 @@ resource "aws_ec2_tag" "public_subnet_cluster_tag" {
 }
 
 resource "aws_ec2_tag" "public_subnet_alb_tag" {
-  count = length(module.network.vpc_public_subnets)
+  count       = length(module.network.vpc_public_subnets)
   resource_id = module.network.vpc_public_subnets[count.index]
   key         = "kubernetes.io/role/elb	"
   value       = "1"

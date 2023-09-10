@@ -28,10 +28,10 @@ spec:
             - name: REDIS_PORT
               value: "6379"
           envFrom:
-          - secretRef:
-              name: admin-creds
-          - secretRef:
-              name: db-creds
+            - secretRef:
+                name: admin-creds
+            - secretRef:
+                name: db-creds
           securityContext:
             runAsNonRoot: true
             runAsUser: 10020
@@ -90,8 +90,8 @@ spec:
     kind: ClusterSecretStore
   refreshInterval: "600m"
   dataFrom:
-  - extract:
-      key: test/admin_creds
+    - extract:
+        key: test/admin_creds
   target:
     name: admin-creds
     creationPolicy: "Owner"
@@ -107,8 +107,8 @@ spec:
     kind: ClusterSecretStore
   refreshInterval: "600m"
   dataFrom:
-  - extract:
-      key: test/db_creds
+    - extract:
+        key: test/db_creds
   target:
     name: db-creds
     creationPolicy: "Owner"

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: simple-python-rest
 spec:
-  replicas: 3
+  replicas: 2
   strategy:
     type: RollingUpdate
     RollingUpdate:
