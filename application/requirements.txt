@@ -1,5 +1,6 @@
 flask
 flask_sqlalchemy
+Flask-HTTPAuth
 PyMySQL
 psycopg2-binary
 redis

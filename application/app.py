@@ -6,6 +6,7 @@ from random import uniform
 import redis
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_httpauth import HTTPBasicAuth
 
 app = Flask(__name__)
 context = {'start_time': datetime.now()}
@@ -23,6 +24,12 @@ print('Conecting to DB', connection_string)
 app.config['SQLALCHEMY_DATABASE_URI'] = connection_string
 db = SQLAlchemy(app)
 
+# Configure basic authentication
+@auth.verify_password
+def verify_password(username, password):
+    expected_username = os.environ.get('ADMIN_USERNAME')
+    expected_password = os.environ.get('ADMIN_PASSWORD')
+    return username == expected_username and password == expected_password
 
 class Palindrom(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -68,6 +75,7 @@ def palindrom(text):
 
 
 @app.route('/admin')
+@auth.login_required
 def admin():
     if not is_ready():
         return 'Not ready', 404
