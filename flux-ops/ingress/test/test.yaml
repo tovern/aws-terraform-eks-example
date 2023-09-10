@@ -21,13 +21,15 @@ spec:
         backend:
           service:
             name: response-403
-            port: use-annotation
+            port: 
+              name: use-annotation
       - path: /ready-for-deploy
         pathType: ImplementationSpecific
         backend:
           service:
             name: response-403
-            port: use-annotation
+            port:
+              name: use-annotation
       - path: /*
         pathType: ImplementationSpecific
         backend:
