@@ -19,15 +19,15 @@ The Private key is stored unencrypted. In reality these secrets should be stored
 
 ### application
 
-The python application which is build with GitHub Actions (.github/workflows/docker-build-publich.yml)
+The python application which is build with GitHub Actions (.github/workflows/docker-build-publish.yml)
 
 ### terraform
 
-The Terraform code to provision the environment (Network, EKS, RDS etc)
+The Terraform code to provision the environment (Network, EKS, RDS, etc)
 
 ### flux-ops
 
-The code used to bootstrap FluxCD onto the EKS cluster and install key components (cluster-autoscaler, external-secrets etc)
+The code used to bootstrap FluxCD onto the EKS cluster and install key components (cluster-autoscaler, external-secrets, etc)
 
 ### flux-apps
 
