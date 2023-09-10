@@ -92,7 +92,8 @@ spec:
   target:
     name: admin-creds
   dataFrom:
-  - key: admin-creds
+  - extract:
+    key: admin-creds
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
@@ -106,4 +107,5 @@ spec:
   target:
     name: db-creds
   dataFrom:
-  - key: db-creds
+  - extract:
+    key: db-creds
