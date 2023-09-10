@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: simple-python-rest-db-init
+  namespace: simple-python-rest
+spec:
+  template:
+    spec:
+      serviceAccountName: simple-python-rest
+      restartPolicy: Never
+      nodeSelector:
+        eks.amazonaws.com/capacityType: ON_DEMAND
+      containers:
+        - name: db-init
+          image: docker.io/tovern/simple-python-rest:v1.0.5
+          command: ["python"]
+          args: ["create_db.py"]
+          env:
+            - name: REDIS_HOST
+              value: "redis-master.redis.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+          envFrom:
+            - secretRef:
+                name: admin-creds
+            - secretRef:
+                name: db-creds
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10020
+            runAsGroup: 20020
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          imagePullPolicy: Always
