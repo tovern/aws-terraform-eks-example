@@ -100,7 +100,7 @@ spec:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: db_creds
+  name: db-creds
 spec:
   secretStoreRef:
     name: aws-secrets-manager
@@ -108,7 +108,7 @@ spec:
   refreshInterval: "600m"
   dataFrom:
   - extract:
-      key: test/db-creds
+      key: test/db_creds
   target:
     name: db-creds
     creationPolicy: "Owner"
