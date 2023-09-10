@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: load-balancer-controller
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: flux-ops/ops/load-balancer-controller
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system # reference this repo
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-vars

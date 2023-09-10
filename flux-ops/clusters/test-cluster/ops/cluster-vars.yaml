@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-vars
+  namespace: flux-system
+data:
+  cluster_name: "test-cluster"
+  cluster_region: "eu-west-2"

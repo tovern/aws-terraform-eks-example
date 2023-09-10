@@ -9,8 +9,8 @@
 6. Run the bootstrap command:
 ```
 flux bootstrap github \
-  --owner=tovern
-  --repository=aws-terraform-eks-example
+  --owner=tovern \
+  --repository=aws-terraform-eks-example \
   --branch=main \
   --path=flux-ops/clusters/${CLUSTER_NAME}
 ```
