@@ -1,2 +1,3 @@
 from app import db
-db.drop_all()
+with app.app_context():
+    db.drop_all()
