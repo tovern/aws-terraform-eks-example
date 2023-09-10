@@ -23,7 +23,7 @@ spec:
             runAsUser: 10010
             runAsGroup: 20010
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true # Be careful that this doesnt break any init scripts on boot
+            readOnlyRootFilesystem: true
             capabilities:
               drop:
                 - ALL

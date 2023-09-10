@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-python-rest
+spec:
+  replicas: 5
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        environment: prod
+    spec:
+      containers:
+        - name: simple-python-rest
+          image: docker.io/tovern/simple-python-rest:v1.0.2
+          env:
+            - name: PYTHON_ENV
+              value: "prod"
+          resources:
+            requests:
+              memory: "2048Mi"
+              cpu: "1"
+            limits:
+              memory: "2048Mi"
+              cpu: "1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "simple-python-rest-service"
+spec:
+  selector:
+    environment: prod

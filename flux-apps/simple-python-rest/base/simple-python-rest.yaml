@@ -1,0 +1,109 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: simple-python-rest
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-python-rest
+spec:
+  selector:
+    matchLabels:
+      app: simple-python-rest
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        app: simple-python-rest
+    spec:
+      serviceAccountName: simple-python-rest
+      nodeSelector:
+        eks.amazonaws.com/capacityType: ON_DEMAND
+      containers:
+        - name: simple-python-rest
+          env:
+            - name: REDIS_HOST
+              value: "redis-master.redis.svc.cluster.local"
+            - name: REDIS_PORT
+              value: 6379
+          envFrom:
+          - secretRef:
+              name: admin-creds
+          - secretRef:
+              name: db-creds
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10020
+            runAsGroup: 20020
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          lifecycle:
+            preStop:
+              httpGet:
+                port: 5000
+                path: /ready-for-deploy
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "simple-python-rest-service"
+spec:
+  ports:
+    - port: 5000
+      targetPort: 5000
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: "simple-python-rest"
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: admin-creds
+spec:
+  secretStoreRef:
+    name: aws-secrets-manager
+    kind: ClusterSecretStore
+  refreshInterval: "1m"
+  target:
+    name: admin-creds
+  dataFrom:
+  - key: admin-creds
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: db-creds
+spec:
+  secretStoreRef:
+    name: aws-secrets-manager
+    kind: ClusterSecretStore
+  refreshInterval: "1m"
+  target:
+    name: db-creds
+  dataFrom:
+  - key: db-creds
