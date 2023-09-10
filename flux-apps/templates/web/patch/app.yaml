@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: APP_NAME
+spec:
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        environment: ENV_NAME
+    spec:
+      containers:
+        - name: APP_NAME
+          image: docker.io/machineadvertising/APP_NAME:v1
+          env:
+            - name: GO_ENV
+              value: "ENV_NAME"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "500m"
+            limits:
+              memory: "2048Mi"
+              cpu: "1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "APP_NAME-service"
+spec:
+  selector:
+    environment: ENV_NAME

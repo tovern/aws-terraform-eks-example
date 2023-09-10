@@ -1,0 +1,18 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: APP_NAME-config
+spec:
+  secretStoreRef:
+    name: aws-secrets-manager
+    kind: ClusterSecretStore
+  refreshInterval: "1m"
+  target:
+    name: APP_NAME-config
+    creationPolicy: "Owner"
+    deletionPolicy: "Delete"
+    template:
+      type: Opaque
+      engineVersion: v2
+      data:
+        production.yml: |

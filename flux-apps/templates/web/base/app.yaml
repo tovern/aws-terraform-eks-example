@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: APP_NAME
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  selector:
+    matchLabels:
+      app: APP_NAME
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        app: APP_NAME
+    spec:
+      automountServiceAccountToken: false
+      nodeSelector:
+        eks.amazonaws.com/capacityType: ON_DEMAND
+      containers:
+        - name: APP_NAME
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10010
+            runAsGroup: 20010
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true # Be careful that this doesnt break any init scripts on boot
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4000
+          volumeMounts:
+            - name: APP_NAME-config
+              mountPath: /app/config
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 5
+            periodSeconds: 30
+      imagePullSecrets:
+        - name: machine-registry
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: APP_NAME-config
+          secret:
+            secretName: APP_NAME-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "APP_NAME-service"
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: "/health"
+    alb.ingress.kubernetes.io/successCodes: "200"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "10"
+spec:
+  ports:
+    - port: 80
+      targetPort: 4000
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: "APP_NAME"

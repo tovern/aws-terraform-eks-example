@@ -1,0 +1,11 @@
+namespace: redis
+resources:
+  - ../base
+patchesStrategicMerge:
+  - redis.yaml
+configMapGenerator:
+  - name: redis-values
+    files:
+      - values.yaml=values.yaml
+configurations:
+  - kustomizeconfig.yaml
