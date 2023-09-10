@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
 
 app = Flask(__name__)
+auth = HTTPBasicAuth()
 context = {'start_time': datetime.now()}
 
 app_host = getenv('APP_HOST', '0.0.0.0')
