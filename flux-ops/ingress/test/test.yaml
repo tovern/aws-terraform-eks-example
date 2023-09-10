@@ -1,3 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: simple-python-rest
+---  
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -34,6 +39,6 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: "simple-python-rest-service"
+            name: "simple-python-rest-service.simple-python-rest.svc.cluster.local"
             port:
               number: 5000
